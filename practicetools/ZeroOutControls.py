@@ -1,14 +1,16 @@
-```
-Zero Out Controls Script by Melodi
-```
+#
+# Zero Out Controls by Melodi
+#
 
 # Explanation:
 import maya.cmds as cmds
+#imports maya commands
 
-# gets selection on controls
-control_selection = cmds.ls(long=True, type="nurbsCurve")
+control_selection = cmds.ls(long=True, type="transform")
+# lists select of nurbs curves controls
 
 cmds.select(control_selection, replace=True)
+# selects nurbs curves controls
 
 # loop through those controls
 for shape in control_selection:
