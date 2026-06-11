@@ -1,6 +1,6 @@
-#
-# Zero Out Controls by Melodi
-#
+"""
+Zero Out Controls by Melodi (WIP)
+"""
 
 # Explanation:
 import maya.cmds as cmds
