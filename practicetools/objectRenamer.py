@@ -1,4 +1,9 @@
+"""
+Object Renamer by Melodi
+"""
+
 from maya import cmds
+# imports maya commands
 
 SUFFIXES = {
     "mesh": "geo",
@@ -19,6 +24,7 @@ def rename(selection=False):
         A list of all the objects we operated on
     """
     objects = cmds.ls(selection=selection, dag=True, long=True)
+    # objects is the variable, shows list of
 
     # This function cannot run if there is no selection, and no object
     if selection and not objects:
