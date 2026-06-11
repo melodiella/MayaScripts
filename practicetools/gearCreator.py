@@ -1,3 +1,7 @@
+"""
+Gear Creator by Melodi
+"""
+
 from maya import cmds
 
 def createGear(teeth=10, length=0.3):
