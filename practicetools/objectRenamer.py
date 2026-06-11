@@ -1,31 +1,41 @@
 """
 Object Renamer by Melodi
 """
+
 from maya import cmds
+# imports maya commands
 
 SUFFIXES = {
     "mesh": "geo",
     "joint": "jnt",
     "camera": None,
-    "ambientLight": "lgt"
+    "ambientLight" : "lgt"
 }
 
 DEFAULT_SUFFIX = "grp"
 
 def rename(selection=False):
-    objects = cmds.ls(selection=selection, dag=True, long=True) or []
+    """
+    This function will rename any objects to have the correct suffix
+    Args:
+        selection: Whether of not we use the current selection
 
+    Returns:
+        A list of all the objects we operated on
+    """
+    objects = cmds.ls(selection=selection, dag=True, long=True)
+    # objects is the variable, shows list of
+
+    # This function cannot run if there is no selection, and no object
     if selection and not objects:
-        raise RuntimeError("You don't have anything selected!")
+        raise RuntimeError("You dont have anything selected! What are you doing?!")
 
     objects.sort(key=len, reverse=True)
 
-    renamed_objects = []
-
     for obj in objects:
-        shortName = obj.split("|")[-1]
+        shortName = (obj.split("|")[-1])
 
-        children = cmds.listRelatives(obj, children=True, fullPath=True) or []
+        children = (cmds.listRelatives(obj, children=True, fullPath=True)) or []
 
         if len(children) == 1:
             child = children[0]
@@ -33,18 +43,27 @@ def rename(selection=False):
         else:
             objType = cmds.objectType(obj)
 
-        suffix = SUFFIXES.get(objType, DEFAULT_SUFFIX)
+        suffix = SUFFIXES.get(objType,DEFAULT_SUFFIX)
 
-        if suffix is None:
-            print("Skipping %s" % obj)
+        if objType == "mesh":
+            suffix = "geo"
+        elif objType == "joint":
+            suffix = "jnt"
+        elif objType == "camera":
+            print ("Skipping camera")
             continue
+        else:
+            suffix = "grp"
 
-        if shortName.endswith("_" + suffix):
-            renamed_objects.append(obj)
+        suffix = SUFFIXES.get(objType,DEFAULT_SUFFIX)
+
+        if obj.endswith('_'+suffix):
             continue
 
         newName = "%s_%s" % (shortName, suffix)
-        renamed = cmds.rename(obj, newName)
-        renamed_objects.append(renamed)
+        cmds.rename(obj, newName)
 
-    return renamed_objects
+        index = objects.index(obj)
+        objects[index] = obj.replace(shortName, newName)
+
+        return objects
