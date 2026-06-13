@@ -1,3 +1,6 @@
+#
+# Simple Cube Rig by Melodi
+#
 from maya import cmds
 
 cube = cmds.polyCube()
